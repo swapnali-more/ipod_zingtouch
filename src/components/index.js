@@ -1,0 +1,7 @@
+export { default as Games } from "./Games"
+export { default as Settings } from "./Settings"
+export { default as Coverflow } from "./Coverflow"
+export { default as Albums } from "./Albums"
+export { default as Artists } from "./Artists"
+export { default as AllSongs } from "./AllSongs"
+export { default as Music } from "./Music"

@@ -6,27 +6,31 @@ import { Games, Music, Settings, Coverflow, Artists, AllSongs, Albums } from "./
 import { menuItems, musicItems } from "./utils";
 
 function App() {
+  // State hooks to manage active menu and submenu indexes and names
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeMenu, setActiveMenu] = useState("Coverflow");
   const [activeSubIndex, setActiveSubIndex] = useState(0);
   const [activeSubMenu, setActiveSubMenu] = useState("");
+  // Ref hook to create a new ZingTouch region and bind gestures to the body element
   const zt = useRef(new ZingTouch.Region(document.body)).current;
-
+  // Effect hook to bind a tap gesture to the body element that updates the active index
   useEffect(() => {
     const gesture = new ZingTouch.Tap({ numInputs: 1 });
     zt.bind(document.body, gesture, () => setActiveIndex((activeIndex + 1) % menuItems.length));
   }, [activeIndex, zt]);
-
+  // Effect hook to bind a tap gesture to the body element that updates the active submenu index
   useEffect(() => {
     const gesture = new ZingTouch.Tap({ numInputs: 1 });
     zt.bind(document.body, gesture, () => setActiveSubIndex((activeSubIndex + 1) % musicItems.length));
   }, [activeSubIndex, zt]);
-
+  // Object to store the components associated with each menu item
   const Elements = { Music: <Music />, Games: <Games />, Settings: <Settings />, Coverflow: <Coverflow /> };
+  // Object to store the components associated with each music submenu item
   const subElements = { "All Songs": <AllSongs />, Artists: <Artists />, Albums: <Albums /> };
-
+  // Function to render the submenu or the main menu element based on the active menu and submenu
   const renderSubMenu = () => (activeMenu === "Music") ? subElements[activeSubMenu] : Elements[activeMenu]
 
+  // Function to handle menu clicks and update the active menu and submenu state
   const handleMenuClick = (menu) => {
     if (menu === "Music" && (activeSubMenu === "All Songs" || activeSubMenu === "Artists" || activeSubMenu === "Albums")) {
       setActiveSubMenu("");
@@ -39,7 +43,7 @@ function App() {
       setActiveIndex(0);
     }
   };
-
+  // Function to handle play button clicks and update the active menu and submenu state
   const handlePlayClick = () => {
     if (activeMenu === "Music") {
       setActiveSubIndex(0);
@@ -49,7 +53,7 @@ function App() {
       setActiveMenu(menuItems[activeIndex])
     }
   }
-
+  // The main component render function
   return (
     <div className="App">
       <div className="ipod">
